@@ -1,17 +1,16 @@
 {
   "name": "dsh-plugin-stand-reminder",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "description": "久坐提醒 · Stand-up Reminder — reminds you to get up and move at your own interval, with built-in or custom wording.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zhaoguohong/dsh-plugin-stand-reminder.git"
+    "url": "git+https://github.com/sunnycreate/dsh-plugin-stand-reminder.git"
   },
-  "homepage": "https://github.com/zhaoguohong/dsh-plugin-stand-reminder",
+  "homepage": "https://github.com/sunnycreate/dsh-plugin-stand-reminder",
   "bugs": {
-    "url": "https://github.com/zhaoguohong/dsh-plugin-stand-reminder/issues"
+    "url": "https://github.com/sunnycreate/dsh-plugin-stand-reminder/issues"
   },
   "keywords": [
     "deepseek",
@@ -47,6 +46,10 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "dsh": {
     "bundle": {

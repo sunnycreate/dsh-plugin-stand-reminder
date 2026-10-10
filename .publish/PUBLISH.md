@@ -33,13 +33,13 @@
 ### 1. 建仓库并推上去
 
 仓库名必须是 **`dsh-plugin-stand-reminder`**，因为本地的 `package.json` 已经按
-`https://github.com/zhaoguohong/dsh-plugin-stand-reminder` 写好了 `repository` 字段，
+`https://github.com/sunnycreate/dsh-plugin-stand-reminder` 写好了 `repository` 字段，
 两者不一致会让 npm 关联失败（收录本身不受影响，但换名字要同步改 `package.json`）。
 
 ```powershell
-# 在 https://github.com/new 建一个空仓库 zhaoguohong/dsh-plugin-stand-reminder（不要勾 README）
+# 在 https://github.com/new 建一个空仓库 sunnycreate/dsh-plugin-stand-reminder（不要勾 README）
 cd D:\WS\Study\dsh-plugin
-git remote add origin https://github.com/zhaoguohong/dsh-plugin-stand-reminder.git
+git remote add origin https://github.com/sunnycreate/dsh-plugin-stand-reminder.git
 git push -u origin main
 ```
 
@@ -59,7 +59,7 @@ npm pack                                   # 生成 dsh-plugin-stand-reminder-1.
 资产名**不要带版本号**，否则用 `latest/download/` 的链接在下次发版后必然 404：
 
 ```yaml
-tarball: https://github.com/zhaoguohong/dsh-plugin-stand-reminder/releases/latest/download/dsh-plugin-stand-reminder.tgz
+tarball: https://github.com/sunnycreate/dsh-plugin-stand-reminder/releases/latest/download/dsh-plugin-stand-reminder.tgz
 ```
 
 拿到 Release 后，把这一行加到 `.publish/data-plugins-entry.yml` 末尾再提交 PR。
@@ -69,7 +69,7 @@ tarball: https://github.com/zhaoguohong/dsh-plugin-stand-reminder/releases/lates
 ### 3. 提 PR 到 awesome-dsh-plugin
 
 - fork [`awesome-dsh-plugin/awesome-dsh-plugin`](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)
-- 新建文件 **`data/plugins/zhaoguohong__dsh-plugin-stand-reminder.yml`**
+- 新建文件 **`data/plugins/sunnycreate__dsh-plugin-stand-reminder.yml`**
 - 内容 = `.publish/data-plugins-entry.yml`（若做了第 2 步就加上 `tarball:` 行）
 - **不要**手工改 `README.md` / `README.zh.md`，它们由脚本生成
 - 一个 PR 最多 3 条；这次只有 1 条

@@ -1,5 +1,5 @@
-url: https://github.com/zhaoguohong/dsh-plugin-stand-reminder
-name: zhaoguohong/dsh-plugin-stand-reminder
+url: https://github.com/sunnycreate/dsh-plugin-stand-reminder
+name: sunnycreate/dsh-plugin-stand-reminder
 category: notify
 description:
   en: Stand-up reminder for desk work: a configurable 1–480 minute interval, a 19-message rotation across movement, eye rest, posture and habit plus your own messages, a reminder card with "I stood up" / snooze / dismiss, an optional always-on countdown pill, optional system notification, Web Audio chime and Screen Wake Lock, and a daily stand-up counter.
