@@ -1,0 +1,7 @@
+# Dependency trees are never committed for a plugin: the published/shipped
+# artifact is the built client bundle, and `npm ci` restores the toolchain.
+node_modules/
+
+# Scratch output from local experiments.
+.render-harness/
+*.tgz

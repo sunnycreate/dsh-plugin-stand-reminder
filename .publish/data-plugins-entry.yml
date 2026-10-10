@@ -1,0 +1,6 @@
+url: https://github.com/zhaoguohong/dsh-plugin-stand-reminder
+name: zhaoguohong/dsh-plugin-stand-reminder
+category: notify
+description:
+  en: Stand-up reminder for desk work: a configurable 1–480 minute interval, a 19-message rotation across movement, eye rest, posture and habit plus your own messages, a reminder card with "I stood up" / snooze / dismiss, an optional always-on countdown pill, optional system notification, Web Audio chime and Screen Wake Lock, and a daily stand-up counter.
+  zh: 久坐提醒：可设 1–480 分钟间隔，19 条文案按「走动 / 眼睛 / 姿势 / 习惯」轮播并支持自定义，提醒卡片带「我起来了 / 推迟 / 先不管」，可选常驻倒计时胶囊、系统通知、Web Audio 提示音与屏幕常亮，并记录今日起身次数。

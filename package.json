@@ -1,0 +1,68 @@
+{
+  "name": "dsh-plugin-stand-reminder",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "久坐提醒 · Stand-up Reminder — reminds you to get up and move at your own interval, with built-in or custom wording.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhaoguohong/dsh-plugin-stand-reminder.git"
+  },
+  "homepage": "https://github.com/zhaoguohong/dsh-plugin-stand-reminder",
+  "bugs": {
+    "url": "https://github.com/zhaoguohong/dsh-plugin-stand-reminder/issues"
+  },
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "reminder",
+    "health",
+    "pomodoro",
+    "stand-up"
+  ],
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./client/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "client",
+    "src",
+    "tests",
+    "scripts",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test \"tests/*.test.js\"",
+    "check": "node --test \"tests/*.test.js\" && node scripts/build.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    }
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "jsdom": "^26.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}

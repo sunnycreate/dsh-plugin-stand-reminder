@@ -1,0 +1,6 @@
+# This is a Windows-first project but ships to npm and GitHub from any OS.
+# Pin the text formats git would otherwise rewrite, so `git add` on Windows
+# does not turn the whole tree into a diff of line endings.
+* text=auto eol=lf
+*.png binary
+*.tgz binary
