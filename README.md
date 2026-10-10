@@ -41,56 +41,14 @@ move on an interval you choose, with built-in wording or entirely your own.
 
 ## 安装
 
-让 Agent 调用 `plugin_manager`（`install_bundle`），目标填空仓库地址：
+直接跟DeepSeek对话说：
 
-```
-install_bundle  target = github:sunnycreate/dsh-plugin-stand-reminder
-```
+帮我安装插件：https://github.com/sunnycreate/dsh-plugin-stand-reminder
 
-也可以直接在 profile 目录手工操作：
+Chat directly with DeepSeek and say: 
 
-```powershell
-cd $env:DSH_PROFILE_DIR
-npm install "github:sunnycreate/dsh-plugin-stand-reminder"
-```
+Help me install the plugin: https://github.com/sunnycreate/dsh-plugin-stand-reminder
 
-装完还要把包名记进 profile 的组合包清单（`install_bundle` 会自动做）：
-
-```jsonc
-// $env:DSH_PROFILE_DIR/package.json
-"dependencies": {
-  "dsh-plugin-stand-reminder": "github:sunnycreate/dsh-plugin-stand-reminder"
-},
-"dsh": { "profile": { "bundles": ["...", "dsh-plugin-stand-reminder"] } }
-```
-
-几点经验：
-
-- **安装过程不跑任何构建脚本。** `client/client.js` 和 `lib/index.js` 都是提交进仓库的构建产物，
-  仓库里也没有 `prepare` / `postinstall`，所以不会触发 pnpm 的 `allowBuilds` 构建授权弹窗。
-  代价是改完源码要自己跑 `npm run build` 并提交产物。
-- **同一个 `.tgz` 路径重复安装时 pnpm 会说 `Already up to date`** 而不重新抓取；
-  GitHub 地址则被解析成一个**固定 commit**，所以 push 之后必须重新安装才会拿到新版本。
-- **从 `link:` 切换到 GitHub 安装前，必须先删掉 `node_modules` 里那个目录联接**，
-  否则 pnpm 会在改名时失败：
-
-  ```
-  [ERR_PNPM_EPERM] operation not permitted, rename
-  '...\node_modules\dsh-plugin-stand-reminder_tmp_40200_1' -> '...\node_modules\dsh-plugin-stand-reminder'
-  ```
-
-  这不是权限问题——Windows 不允许用改名覆盖一个已存在的 junction。断开链接不会动到源码：
-
-  ```powershell
-  cmd /c "rmdir `"$env:DSH_PROFILE_DIR\node_modules\dsh-plugin-stand-reminder`""
-  ```
-
-- **`install_bundle` 会校验 `cordis.patch.yml` 能否解析**；失败时它把 `package.json`、
-  `pnpm-lock.yaml` 和 `node_modules` 一起回滚（插件会变成未安装状态）。YAML 注释必须是 `#`，
-  不能写 `//`——`tests/package.test.js` 专门守住这条。
-
-装完不需要重启：插件页/管理服务会热加载，`shell.overlay` 与 `settings.section`
-两个条目会立即出现在运行中的会话里。
 
 ## 使用
 
