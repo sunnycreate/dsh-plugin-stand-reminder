@@ -41,40 +41,53 @@ move on an interval you choose, with built-in wording or entirely your own.
 
 ## 安装
 
-最省事的方式是让 Agent 调用 `plugin_manager`（`install_bundle`），
-目标填 **本目录的绝对路径** 或某个 `.tgz` 的绝对路径：
+让 Agent 调用 `plugin_manager`（`install_bundle`），目标填空仓库地址：
 
 ```
-install_bundle  target = D:\WS\Study\dsh-plugin
-                # 目录：pnpm 做 link，改完源码重新构建即生效（开发时推荐）
-
-install_bundle  target = D:\path\to\dsh-plugin-stand-reminder-1.0.0.tgz
-                # 压缩包：普通不可变依赖（分发时推荐）
+install_bundle  target = github:sunnycreate/dsh-plugin-stand-reminder
 ```
 
 也可以直接在 profile 目录手工操作：
 
 ```powershell
 cd $env:DSH_PROFILE_DIR
-
-npm install "link:D:\WS\Study\dsh-plugin"                              # 目录方式
-npm install "file:$env:TEMP\dsh-plugin-stand-reminder-1.0.0.tgz"       # 压缩包方式
+npm install "github:sunnycreate/dsh-plugin-stand-reminder"
 ```
 
 装完还要把包名记进 profile 的组合包清单（`install_bundle` 会自动做）：
 
 ```jsonc
 // $env:DSH_PROFILE_DIR/package.json
+"dependencies": {
+  "dsh-plugin-stand-reminder": "github:sunnycreate/dsh-plugin-stand-reminder"
+},
 "dsh": { "profile": { "bundles": ["...", "dsh-plugin-stand-reminder"] } }
 ```
 
-两点经验：
+几点经验：
 
-- 同一个 `.tgz` 路径重复安装时 pnpm 会说 `Already up to date` 而不重新抓取，
-  所以改完代码要么改版本号，要么用目录（`link:`）方式装。
-- `install_bundle` 会校验 `cordis.patch.yml` 能否解析；失败时它把 `package.json`、
-  `pnpm-lock.yaml` 和 `node_modules` 一起回滚。YAML 注释必须是 `#`，不能写 `//`——
-  `tests/package.test.js` 专门守住这条。
+- **安装过程不跑任何构建脚本。** `client/client.js` 和 `lib/index.js` 都是提交进仓库的构建产物，
+  仓库里也没有 `prepare` / `postinstall`，所以不会触发 pnpm 的 `allowBuilds` 构建授权弹窗。
+  代价是改完源码要自己跑 `npm run build` 并提交产物。
+- **同一个 `.tgz` 路径重复安装时 pnpm 会说 `Already up to date`** 而不重新抓取；
+  GitHub 地址则被解析成一个**固定 commit**，所以 push 之后必须重新安装才会拿到新版本。
+- **从 `link:` 切换到 GitHub 安装前，必须先删掉 `node_modules` 里那个目录联接**，
+  否则 pnpm 会在改名时失败：
+
+  ```
+  [ERR_PNPM_EPERM] operation not permitted, rename
+  '...\node_modules\dsh-plugin-stand-reminder_tmp_40200_1' -> '...\node_modules\dsh-plugin-stand-reminder'
+  ```
+
+  这不是权限问题——Windows 不允许用改名覆盖一个已存在的 junction。断开链接不会动到源码：
+
+  ```powershell
+  cmd /c "rmdir `"$env:DSH_PROFILE_DIR\node_modules\dsh-plugin-stand-reminder`""
+  ```
+
+- **`install_bundle` 会校验 `cordis.patch.yml` 能否解析**；失败时它把 `package.json`、
+  `pnpm-lock.yaml` 和 `node_modules` 一起回滚（插件会变成未安装状态）。YAML 注释必须是 `#`，
+  不能写 `//`——`tests/package.test.js` 专门守住这条。
 
 装完不需要重启：插件页/管理服务会热加载，`shell.overlay` 与 `settings.section`
 两个条目会立即出现在运行中的会话里。
@@ -146,8 +159,10 @@ npm run check      # test + build
 2. **YAML 注释只能是 `#`。** `cordis.patch.yml` 里写 `//` 会让安装被拒绝并整包回滚。
 3. **语言快照的字段是 `active`，不是 `language` / `id`。** 读错不会报错，只会静默变英文。
 4. **不要假设 `globalThis.addEventListener` 存在**，用 `globalThis.window?.addEventListener`。
-5. **同一个 `.tgz` 路径重复安装时 pnpm 会说 `Already up to date`** 而不重新抓取，
-   所以热更新用目录（`link:`）方式装。
+5. **一个地址只能对应一种安装方式。** `github:owner/repo` 会被解析成固定 commit，
+   push 之后必须重新安装；重复用同一个 `.tgz` 路径装，pnpm 会说 `Already up to date`
+   而不重新抓取。而且从 `link:` 切换过去之前要先删掉 `node_modules` 里的 junction，
+   否则一定 EPERM（见上面「安装」一节）。
 
 ### 设计要点
 
